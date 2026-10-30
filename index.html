@@ -3,76 +3,82 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Avatar Studio</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avatar Studio Pro</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;padding:24px;min-height:100vh;
- display:grid;place-items:center;
- background:#10111b;color:white;
- font-family:Arial,sans-serif
-}
-main{
- width:100%;max-width:480px;
- background:#1c1e2d;padding:28px;
- border-radius:20px;text-align:center
-}
-h1{color:#c7a7ff}
-p{color:#c5c5d2;line-height:1.5}
-label{display:block;text-align:left;margin-top:20px}
-input,button{
- width:100%;padding:14px;margin-top:10px;
- border-radius:10px;font-size:16px
-}
-input{background:#292b3d;color:white;border:1px solid #555}
-button{
- background:#9b70ed;color:white;border:0;
- font-weight:bold;cursor:pointer
-}
+body{margin:0;background:#0c0c16;color:#fff;font-family:Arial,sans-serif}
+header{padding:22px;background:#151526;border-bottom:1px solid #292943}
+header h1{margin:0;color:#c5a5ff;font-size:25px}
+header p{color:#aaa;margin-bottom:0}
+main{max-width:850px;margin:auto;padding:22px}
+.card{background:#181829;border:1px solid #30304a;border-radius:16px;padding:20px;margin-bottom:18px}
+h2{font-size:18px;margin-top:0}
+label{display:block;margin:16px 0 8px;color:#d5c7ff}
+input,textarea{width:100%;padding:13px;background:#25253a;color:white;border:1px solid #44445f;border-radius:9px}
+textarea{min-height:110px;resize:vertical}
+button{width:100%;padding:15px;border:0;border-radius:10px;background:#9065e8;color:white;font-weight:bold;font-size:16px;margin-top:18px}
 button:disabled{opacity:.5}
-img{max-width:100%;max-height:260px;
- margin-top:18px;border-radius:12px;display:none}
-audio{width:100%;margin-top:15px;display:none}
-.note{font-size:12px}
-#status{margin-top:18px;color:#c7a7ff}
+img{display:none;max-width:100%;max-height:260px;object-fit:contain;margin:15px auto;border-radius:12px}
+audio{display:none;width:100%;margin-top:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:#222238;border-radius:12px;padding:16px}
+.tile strong{display:block;color:#c5a5ff;margin-bottom:7px}
+small{color:#aaa;line-height:1.5}
+#status{color:#c5a5ff;line-height:1.5}
+footer{text-align:center;color:#777;padding:25px;font-size:12px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}main{padding:14px}}
 </style>
 </head>
 <body>
-<main>
-<h1>Avatar Studio</h1>
-<p>Transforme uma foto em um personagem falando.</p>
+<header>
+<h1>✦ Avatar Studio Pro</h1>
+<p>Seu laboratório de avatares e vídeos com inteligência artificial.</p>
+</header>
 
-<label for="photo">1. Escolha uma foto</label>
+<main>
+<div class="grid">
+<div class="tile"><strong>01 · AVATARES</strong><small>Crie personagens que falam.</small></div>
+<div class="tile"><strong>02 · REELS</strong><small>Prepare vídeos para suas redes.</small></div>
+<div class="tile"><strong>03 · ÁUDIO</strong><small>Adicione sua narração.</small></div>
+<div class="tile"><strong>04 · EDIÇÃO</strong><small>Prepare seu conteúdo.</small></div>
+</div>
+
+<section class="card">
+<h2>🎭 Criar vídeo com avatar</h2>
+
+<label for="photo">Foto do personagem</label>
 <input id="photo" type="file" accept="image/*">
 <img id="preview" alt="Prévia do personagem">
 
-<label for="audio">2. Escolha um áudio</label>
+<label for="audio">Áudio da narração</label>
 <input id="audio" type="file" accept="audio/*">
 <audio id="player" controls></audio>
 
-<button id="generate" disabled>Preparar meu vídeo</button>
+<label for="script">Roteiro do vídeo</label>
+<textarea id="script" placeholder="Cole aqui seu roteiro em inglês..."></textarea>
 
-<p id="status">Envie uma foto e um áudio para começar.</p>
-<p class="note">Motor de geração de vídeo ainda será conectado.</p>
+<p id="status">Adicione uma foto e um áudio para preparar seu projeto.</p>
+<button id="generate" disabled>Gerador de vídeo em preparação</button>
+<small>O motor de inteligência artificial será conectado na próxima etapa. Nenhum vídeo é gerado ainda.</small>
+</section>
+
+<section class="card">
+<h2>🎬 Fábrica de Reels</h2>
+<p>Área reservada para produção em lote, legendas automáticas, edição e exportação em formato vertical.</p>
+<small>Esses recursos serão desenvolvidos nas próximas etapas.</small>
+</section>
 </main>
+
+<footer>AVATAR STUDIO PRO · Seu estúdio de criação</footer>
 
 <script>
 const photo=document.getElementById('photo');
 const audio=document.getElementById('audio');
 const preview=document.getElementById('preview');
 const player=document.getElementById('player');
-const generate=document.getElementById('generate');
+const button=document.getElementById('generate');
 const status=document.getElementById('status');
-
-function update(){
- generate.disabled=!(photo.files.length && audio.files.length);
- if(generate.disabled){
- status.textContent='Envie uma foto e um áudio para começar.';
- }else{
- status.textContent='Arquivos selecionados! Tudo pronto para a próxima etapa.';
- }
-}
 
 photo.addEventListener('change',()=>{
  if(photo.files[0]){
@@ -90,9 +96,13 @@ audio.addEventListener('change',()=>{
  update();
 });
 
-generate.addEventListener('click',()=>{
- status.textContent='Interface funcionando! O motor de lip sync ainda precisa ser conectado.';
-});
+function update(){
+ const ready=photo.files.length>0 && audio.files.length>0;
+ button.disabled=!ready;
+ status.textContent=ready
+ ?'Foto e áudio carregados! Seu projeto está preparado para a próxima etapa.'
+ :'Adicione uma foto e um áudio para preparar seu projeto.';
+}
 </script>
 </body>
 </html>
