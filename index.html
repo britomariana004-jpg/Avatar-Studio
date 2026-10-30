@@ -1,64 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avatar Studio</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #10111b;
-      color: white;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-    main {
-      width: 100%;
-      max-width: 480px;
-      background: #1c1e2d;
-      padding: 28px;
-      border-radius: 20px;
-      text-align: center;
-    }
-    h1 { color: #c7a7ff; }
-    p { color: #c5c5d2; line-height: 1.5; }
-    input, button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 14px;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-    input { background: #292b3d; color: white; border: 1px solid #555; }
-    button {
-      background: #9b70ed;
-      color: white;
-      border: 0;
-      font-weight: bold;
-    }
-    .note { font-size: 12px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatar Studio</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;padding:24px;min-height:100vh;
+ display:grid;place-items:center;
+ background:#10111b;color:white;
+ font-family:Arial,sans-serif
+}
+main{
+ width:100%;max-width:480px;
+ background:#1c1e2d;padding:28px;
+ border-radius:20px;text-align:center
+}
+h1{color:#c7a7ff}
+p{color:#c5c5d2;line-height:1.5}
+label{display:block;text-align:left;margin-top:20px}
+input,button{
+ width:100%;padding:14px;margin-top:10px;
+ border-radius:10px;font-size:16px
+}
+input{background:#292b3d;color:white;border:1px solid #555}
+button{
+ background:#9b70ed;color:white;border:0;
+ font-weight:bold;cursor:pointer
+}
+button:disabled{opacity:.5}
+img{max-width:100%;max-height:260px;
+ margin-top:18px;border-radius:12px;display:none}
+audio{width:100%;margin-top:15px;display:none}
+.note{font-size:12px}
+#status{margin-top:18px;color:#c7a7ff}
+</style>
 </head>
 <body>
-  <main>
-    <h1>Avatar Studio</h1>
-    <p>Transforme uma foto em um vídeo com seu personagem falando.</p>
+<main>
+<h1>Avatar Studio</h1>
+<p>Transforme uma foto em um personagem falando.</p>
 
-    <label for="photo">Escolha uma foto</label>
-    <input id="photo" type="file" accept="image/*">
+<label for="photo">1. Escolha uma foto</label>
+<input id="photo" type="file" accept="image/*">
+<img id="preview" alt="Prévia do personagem">
 
-    <label for="audio">Escolha um áudio</label>
-    <input id="audio" type="file" accept="audio/*">
+<label for="audio">2. Escolha um áudio</label>
+<input id="audio" type="file" accept="audio/*">
+<audio id="player" controls></audio>
 
-    <button onclick="alert('A geração de vídeos será conectada na próxima etapa!')">
-      Criar meu vídeo
-    </button>
+<button id="generate" disabled>Preparar meu vídeo</button>
 
-    <p class="note">Prévia inicial do Avatar Studio.</p>
-  </main>
+<p id="status">Envie uma foto e um áudio para começar.</p>
+<p class="note">Motor de geração de vídeo ainda será conectado.</p>
+</main>
+
+<script>
+const photo=document.getElementById('photo');
+const audio=document.getElementById('audio');
+const preview=document.getElementById('preview');
+const player=document.getElementById('player');
+const generate=document.getElementById('generate');
+const status=document.getElementById('status');
+
+function update(){
+ generate.disabled=!(photo.files.length && audio.files.length);
+ if(generate.disabled){
+ status.textContent='Envie uma foto e um áudio para começar.';
+ }else{
+ status.textContent='Arquivos selecionados! Tudo pronto para a próxima etapa.';
+ }
+}
+
+photo.addEventListener('change',()=>{
+ if(photo.files[0]){
+ preview.src=URL.createObjectURL(photo.files[0]);
+ preview.style.display='block';
+ }
+ update();
+});
+
+audio.addEventListener('change',()=>{
+ if(audio.files[0]){
+ player.src=URL.createObjectURL(audio.files[0]);
+ player.style.display='block';
+ }
+ update();
+});
+
+generate.addEventListener('click',()=>{
+ status.textContent='Interface funcionando! O motor de lip sync ainda precisa ser conectado.';
+});
+</script>
 </body>
 </html>
